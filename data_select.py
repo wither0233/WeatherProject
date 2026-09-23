@@ -11,8 +11,8 @@ def select_data(input_data:xr.DataArray,altitude:float,lat_start:float,lat_end:f
     :param lat_end: selected latitude max
     :return: selected data array
     """
-    selected_data = input_data.where(input_data["alt_retrieved"] == altitude, drop = True)
-    selected_data = selected_data.where(selected_data.notnull(), drop = True)
+    selected_data = input_data.sel(alt_retrieved = altitude)
+    selected_data = selected_data.where(selected_data['u'].notnull(), drop = True)
     mask = (selected_data["lat"] >= lat_start) & (selected_data["lat"] <= lat_end)
     selected_data = selected_data.where(mask, drop=True)
     return selected_data
