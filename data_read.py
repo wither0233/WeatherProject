@@ -1,34 +1,29 @@
 import xarray as xr
-from pandas.core._numba.kernels import mean_
+from pathlib import Path
 
-# know data in document
-ds = xr.open_dataset(r'C:\Users\zENITH\Downloads\TIDI_data\2019\TIDI_PB_2019290_P0100_S0450_D011_R01.vec',engine='netcdf4')
-# print(ds["alt_retrieved"].attrs,ds["alt_retrieved"].values)
-ds = ds.set_coords("alt_retrieved")
-ds.swap_dims({"nalts":"alt_retrieved"})
-u_95 = ds['u'].sel(alt_retrieved = 95)
-v_95 = ds['v'].sel(alt_retrieved = 95)
-u_95 = u_95.dropna(dim = "nvec")
-print(f"mean:{round(float(u_95.mean()),2)}")
-print(f"std:{round(float(v_95.std()),2)}")
-print(f"min:{round(float(u_95.min()),2)}")
-print(f"max:{round(float(u_95.max()),2)}")
+def data_load(filepath:str,year_file:int,day_start:int,day_end:int):
+    """
+    Function to load data from file
+    :param filepath:your path to store TIDI data.
+    :param year_file:choose year in the path to get TIDI data.
+    :param day_start:data range start.
+    :param day_end:data range end.
+    :return:dataset of TIDI data in range.
+    :rtype: xarray.Dataset(dims:"time","alt_retrieved")
+    """
+    ds_list = []
+    for day in range(day_start,day_end+1):
+        document_name = "TIDI_PB_" + str(year_file) + str(day) + "_P0100_S0450_D011_R01.VEC"
+        final_filepath = Path(filepath) / str(year_file) / document_name
+        ds = xr.open_dataset(final_filepath)
+        ds = ds.set_coords(["time","alt_retrieved"])
+        ds = ds.swap_dims({"nvec":"time", "nalts":"alt_retrieved"})
+        ds_list.append(ds)
+    final_ds = xr.concat(ds_list, dim="time")
+    return final_ds
 
 
-# for var in ds.data_vars:
-#     print(var,ds[var].dims,ds[var].shape,ds[var].attrs)
-#     print(ds[var].coords)
-# def weather_data(data_path:tuple[str]):
-#     """
-#     :param data_path: input all data path
-#     :return: list of weather data
-#     """
-#     data_list = []
-#     for file in data_path:
-#         with open(file, 'r', encoding = 'gbk') as f:
-#             for line in f:
-#                 data_list.append(line)
-#     return data_list
+if __name__ == "__main__":
+    ds1 = data_load(r"C:\Users\zENITH\Downloads\TIDI_data",2019,270,290)
+    print(ds1.dims)
 
-# if __name__ == '__main__':
-#     print(weather_data((r'C:\Users\zENITH\Downloads\TIDI_data\2019\TIDI_PB_2019290_P0100_S0450_D011_R01.vec',)))
