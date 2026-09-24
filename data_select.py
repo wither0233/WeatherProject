@@ -20,7 +20,8 @@ def select_data(input_data:xr.DataArray,altitude:float,lat_start:float,lat_end:f
 
 if __name__ == "__main__":
     ds = data_read.data_load(r"C:\Users\zENITH\Downloads\TIDI_data", 2019, 250, 290)
-    print(ds.dims)
+    print("dims after read:",ds.dims)
     ds = data_clean.clean_data(ds)
-    print(ds.dims)
-    print(select_data(ds, altitude = 95, lat_start = -30, lat_end = 30).dims)
+    print("dims after clean:",ds.dims)
+    ds = select_data(ds, altitude = 95, lat_start = -30, lat_end = 30)
+    print(ds['u'].sizes,ds["u"].values)
