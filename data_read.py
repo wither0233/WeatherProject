@@ -4,6 +4,7 @@ from pathlib import Path
 def data_load(filepath:str,year_file:int,day_start:int,day_end:int):
     """
     Function to load data from file
+    Reset time: from first day of this year(second)
     :param filepath:your path to store TIDI data.
     :param year_file:choose year in the path to get TIDI data.
     :param day_start:data range start.
@@ -16,14 +17,19 @@ def data_load(filepath:str,year_file:int,day_start:int,day_end:int):
         document_name = "TIDI_PB_" + str(year_file) + str(day) + "_P0100_S0450_D011_R01.VEC"
         final_filepath = Path(filepath) / str(year_file) / document_name
         ds = xr.open_dataset(final_filepath)
+        ds = ds.rename({"time":"gps_time"})
+        time = ds["ut_date"].astype(str).str[-3:].astype(int)
+        time = time * 24 * 60 * 60 + ds["ut_time"] / 1000
+        ds["time"] = time
         ds = ds.set_coords(["time","alt_retrieved"])
         ds = ds.swap_dims({"nvec":"time", "nalts":"alt_retrieved"})
         ds_list.append(ds)
-    final_ds = xr.concat(ds_list, dim="time")
+    final_ds = xr.concat(ds_list, dim = "time")
     return final_ds
 
 
 if __name__ == "__main__":
     ds1 = data_load(r"C:\Users\zENITH\Downloads\TIDI_data",2019,270,290)
     print("dims after read:",ds1.dims)
+    print("time:",ds1["time"].values)
 

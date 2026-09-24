@@ -24,4 +24,4 @@ if __name__ == "__main__":
     ds = data_clean.clean_data(ds)
     print("dims after clean:",ds.dims)
     ds = select_data(ds, altitude = 95, lat_start = -30, lat_end = 30)
-    print(ds['u'].sizes,ds["u"].values)
+    print(ds['u'].sizes,ds["ut_time"].values,ds["ut_time"].attrs)
