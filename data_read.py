@@ -30,6 +30,6 @@ def data_load(filepath:str,year_file:int,day_start:int,day_end:int):
 
 if __name__ == "__main__":
     ds1 = data_load(r"C:\Users\zENITH\Downloads\TIDI_data",2019,270,290)
-    print("dims after read:",ds1.dims)
-    print("time:",ds1["time"].values)
+    print("dims after read:",ds1.attrs)
+    # print("time:",ds1["time"].values)
 
