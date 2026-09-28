@@ -1,11 +1,12 @@
 import xarray as xr
 from pathlib import Path
+from config import get_config
 
-def data_load(filepath:str,year_file:int,day_start:int,day_end:int):
+def data_load(year_file:int,day_start:int,day_end:int):
+    filepath = get_config()
     """
     Function to load data from file
     Reset time: from first day of this year(second)
-    :param filepath:your path to store TIDI data.
     :param year_file:choose year in the path to get TIDI data.
     :param day_start:data range start.
     :param day_end:data range end.
@@ -29,7 +30,7 @@ def data_load(filepath:str,year_file:int,day_start:int,day_end:int):
 
 
 if __name__ == "__main__":
-    ds1 = data_load(r"C:\Users\zENITH\Downloads\TIDI_data",2019,270,290)
+    ds1 = data_load(2015,250,27WeatherProject0)
     print("dims after read:",ds1.attrs)
     # print("time:",ds1["time"].values)
 
