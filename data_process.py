@@ -1,4 +1,5 @@
 import xarray as xr
+import numpy as np
 import data_read
 import data_clean
 import data_select
@@ -11,7 +12,7 @@ def process_data(input_data:xr.Dataset):
     :return: the dataset after processing
     """
     input_data["time"] = (input_data["time"] - input_data["time"].isel(time = 0)) / 3600
-    input_data["lon"] = input_data["lon"] / 360
+    input_data["lon"] = input_data["lon"] / 360 * 2 * np.pi
     return input_data
 
 

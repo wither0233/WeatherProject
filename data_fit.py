@@ -13,7 +13,7 @@ def fit_data(input_data:xr.Dataset, wave_number:int, period:float, sign_directio
     omega = 2 * np.pi / period
     def model(x, A, B, C):
         t, l = x
-        pause = (omega * t + sign_direction * wave_number * l * 2 * np.pi)
+        pause = (omega * t + sign_direction * wave_number * l)
         return A * np.cos(pause) + B * np.sin(pause) + C
 
     initial_guess = [
