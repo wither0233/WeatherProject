@@ -40,9 +40,7 @@ def scan_wave_period(input_data:xr.Dataset, wave_number_start:int, wave_number_e
     :return: xarray DataArray with value amplitudes,coops:"period", "wave_number"
     """
     wave_numbers = np.arange(wave_number_start, wave_number_end + 1)
-    print(wave_numbers)
     periods = np.arange(period_start, period_end + 1, 2)
-    print(periods)
     amplitudes = np.full((len(periods),len(wave_numbers)),np.nan)
     for i,period in enumerate(periods):
         for j,wave_number in enumerate(wave_numbers):
