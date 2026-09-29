@@ -1,3 +1,5 @@
+from operator import truediv
+
 import matplotlib.pyplot as plt
 import xarray as xr
 import data_read
@@ -5,11 +7,16 @@ import data_clean
 import data_select
 import data_process
 import data_fit
+from config import get_config
 
 def paint_wave_period(fit_datas:xr.DataArray, year:int, day_start:int, day_end:int):
     periods = fit_datas["period"].values
     wave_numbers = fit_datas["wave_number"].values
     amplitudes = fit_datas.values
+    Project_ROOT = get_config().parent
+    Output_ROOT = Project_ROOT / "output"
+    Output_ROOT.mkdir(parents = True, exist_ok=True)
+    output_file = Output_ROOT / "result.png"
     fig, ax = plt.subplots(figsize=(8, 6))
     contour = ax.contourf(
         wave_numbers,
@@ -26,6 +33,7 @@ def paint_wave_period(fit_datas:xr.DataArray, year:int, day_start:int, day_end:i
     ax.set_ylabel("Period (hours)")
     ax.set_title(f"Period–Wave Number Spectrum Of {year} - {day_start} to {day_end}")
     plt.tight_layout()
+    plt.savefig(output_file, dpi = 300, bbox_inches = "tight")
     plt.show()
 
 if __name__ == "__main__":
