@@ -50,7 +50,7 @@ def scan_wave_period(input_data:xr.Dataset, wave_number_start:int, wave_number_e
                         attrs = {"units":"m/s"} )
 
 if __name__ == "__main__":
-    ds = data_read.data_load(r"C:\Users\zENITH\Downloads\TIDI_data", 2019, 258, 272)
+    ds = data_read.data_load(2019, 258, 272)
     # print("dims after read:", ds.dims)
     ds = data_clean.clean_data(ds)
     # print("dims after clean:", ds.dims)

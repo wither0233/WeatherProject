@@ -13,7 +13,7 @@ def clean_data(origin_data:xr.Dataset):
     return origin_data
 
 if __name__ == "__main__":
-    ds = data_read.data_load(r"C:\Users\zENITH\Downloads\TIDI_data",2019,270,290)
+    ds = data_read.data_load(2019,270,290)
     print("dims after read:",ds.dims)
     ds = clean_data(ds)
     print("dims after clean:",ds.dims)
